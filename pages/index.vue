@@ -1,5 +1,5 @@
 <template>
-  <Tutorial/>
+  <Test/>
 </template>
 
 <script lang="ts">
@@ -13,7 +13,6 @@ import {far} from '@fortawesome/free-regular-svg-icons'
 
 library.add(fab, fas, far);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
-
 
 export default Vue.extend({})
 </script>
