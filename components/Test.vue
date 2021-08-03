@@ -17,8 +17,7 @@ export default {
     }
   },
   async beforeMount() {
-    const result = await this.$axios.$get('http://localhost:3000/api/users');
-    this.user = result[0];
+    this.user = await this.$axios.$post('http://localhost:3000/api/connection', {Mail: 'test@test.fr', Password: 'test'});
     console.log(this.user);
   },
   methods: {
