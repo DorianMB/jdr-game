@@ -3,8 +3,4 @@ export class User {
   Name?: string;
   Mail?: string;
   Password?: string;
-
-  getNameAndEmail() {
-    return this.Name  + ' & ' + this.Mail;
-  }
 }
