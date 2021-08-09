@@ -8,17 +8,20 @@
 <script>
 import {User} from "../static/models/user";
 import {getNameAndEmail} from "../static/Functions";
+import {Equipement} from "../static/models/equipement";
 
 export default {
   name: "Test",
   data() {
     return {
-      user: User
+      user: User,
+      equipement: [Equipement]
     }
   },
   async beforeMount() {
     this.user = await this.$axios.$post('http://localhost:3000/api/connection', {Mail: 'test@test.fr', Password: 'test'});
-    console.log(this.user);
+    this.equipement = await this.$axios.$get('http://localhost:3000/api/equipements');
+    console.log(this.user, this.equipement);
   },
   methods: {
     getNameAndEmail,
