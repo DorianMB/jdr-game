@@ -8,21 +8,21 @@
 <script>
 import {User} from "../static/models/user";
 import {getNameAndEmail} from "../static/Functions";
-import {Equipement} from "../static/models/equipement";
+import {Bag} from "../static/models/bag";
 
 export default {
   name: "Test",
   data() {
     return {
       user: User,
-      equipement: [Equipement]
+      bag: [Bag]
     }
   },
   async beforeMount() {
     const sendUser = {mail: 'test@test.fr', password: 'test'};
     this.user = await this.$axios.$post('http://localhost:3000/api/connection', sendUser);
-    this.equipement = await this.$axios.$get('http://localhost:3000/api/equipements');
-    console.log(this.user, this.equipement);
+    this.bag = await this.$axios.$get('http://localhost:3000/api/bags');
+    console.log(this.user, this.bag);
   },
   methods: {
     getNameAndEmail,
