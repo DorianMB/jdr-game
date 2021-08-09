@@ -1,5 +1,5 @@
-import * as UserModel from "./models/user";
+import {User} from "./models/user";
 
-export function getNameAndEmail(user: any) {
-    return user.Name + " & " + user.Mail;
+export function getNameAndEmail(user: User) {
+    return user.name + " & " + user.mail;
   }

@@ -1,5 +1,5 @@
 <template>
-  <h1 v-if="user.Name">
+  <h1 v-if="user.name">
     {{getNameAndEmail(user)}}
     <font-awesome-icon :icon="['fas', 'chart-bar']" class="ml-2"></font-awesome-icon>
   </h1>
@@ -19,7 +19,8 @@ export default {
     }
   },
   async beforeMount() {
-    this.user = await this.$axios.$post('http://localhost:3000/api/connection', {Mail: 'test@test.fr', Password: 'test'});
+    const sendUser = {mail: 'test@test.fr', password: 'test'};
+    this.user = await this.$axios.$post('http://localhost:3000/api/connection', sendUser);
     this.equipement = await this.$axios.$get('http://localhost:3000/api/equipements');
     console.log(this.user, this.equipement);
   },

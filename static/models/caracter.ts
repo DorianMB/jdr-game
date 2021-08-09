@@ -1,10 +1,10 @@
 export class Caracter {
-  CaracterID?: number;
-  UserID?: number;
-  EquipementID?: number;
-  StatID?: number;
-  BagID?: number;
-  Picture?: string;
-  Experience?: number;
-  Money?: number;
+  caracter_id?: number;
+  user_id?: number;
+  equipement_id?: number;
+  stat_id?: number;
+  bag_id?: number;
+  picture?: string;
+  experience?: number;
+  money?: number;
 }
