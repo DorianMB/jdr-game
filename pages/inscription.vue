@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-center align-items-center connexion">
-    <div class="d-flex flex-column align-items-center w-75 shadow rounded p-3">
+    <div class="d-flex flex-column align-items-center full-card p-3">
       <h2>Inscription</h2>
       <b-form @submit="onSubmit" class="d-flex flex-column align-items-center w-100">
         <b-form-group
@@ -46,7 +46,7 @@
             required
           ></b-form-input>
         </b-form-group>
-        <nuxt-link to="/" class="mb-3">Vous etes déjà inscrit ?</nuxt-link>
+        <nuxt-link to="/" class="text-secondary mb-3">Vous etes déjà inscrit ?</nuxt-link>
         <b-alert v-model="showAlert" variant="danger" dismissible>
           {{message}}
         </b-alert>

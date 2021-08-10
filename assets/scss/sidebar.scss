@@ -1,0 +1,21 @@
+.btn-sidebar {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  z-index: 1030;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.b-sidebar-body {
+  .list-group {
+    border-radius: 0;
+  }
+  .list-group-item {
+    border: none;
+    &:hover {
+      background-color: $primary;
+      color: white;
+    }
+  }
+}

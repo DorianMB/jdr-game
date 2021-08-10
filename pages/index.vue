@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-center align-items-center connexion">
-    <div class="d-flex flex-column align-items-center w-75 shadow rounded p-3">
+    <div class="d-flex flex-column align-items-center full-card p-3">
       <h2>Connexion</h2>
       <b-form @submit="onSubmit" class="d-flex flex-column align-items-center w-100">
         <b-form-group
@@ -42,7 +42,7 @@
         >
           Rester connecté(e)
         </b-form-checkbox>
-        <nuxt-link to="inscription" class="mb-3">Vous n'etes pas encore inscrit ?</nuxt-link>
+        <nuxt-link class="text-secondary mb-3" to="inscription">Vous n'etes pas encore inscrit ?</nuxt-link>
         <b-alert v-model="showAlert" variant="danger" dismissible>
           {{message}}
         </b-alert>

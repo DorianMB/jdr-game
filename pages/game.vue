@@ -1,5 +1,5 @@
 <template>
-  <p v-if="user.name">Bonjour {{user.name}}</p>
+  <h1 class="text-center" v-if="user.name">Bonjour {{user.name}}</h1>
 </template>
 
 <script>
