@@ -24,8 +24,9 @@ export default {
     const sendUser = {mail: 'test@test.fr', password: 'test'};
     this.user = await this.$axios.$post(ApiUrls.GET_API_CONNECTION(), sendUser);
     this.items = await this.$axios.$get(ApiUrls.GET_API_ALL_ITEMS());
+    const admin = await this.$axios.$get(ApiUrls.GET_API_IS_ADMIN() + '/' + this.user.user_id);
     // this.createCaracter(this.$axios, this.user.user_id);
-    console.log(this.user, this.items);
+    console.log(this.user, admin);
   },
   methods: {
     getNameAndEmail,

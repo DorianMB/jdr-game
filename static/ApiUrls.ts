@@ -1,5 +1,6 @@
 const _BASE_API = "http://localhost:3000/api";
 const _CONNECTION = "/connection";
+const _IS_ADMIN = "/is-admin";
 const _USERS = "/users";
 const _CARACTERS = "/caracters";
 const _EQUIPEMENTS = "/equipements";
@@ -13,6 +14,13 @@ const _ITEMS = "/items";
  */
 export const GET_API_CONNECTION = () => {
   return `${_BASE_API}${_CONNECTION}`;
+};
+
+/**
+ * @return {string}
+ */
+export const GET_API_IS_ADMIN = () => {
+  return `${_BASE_API}${_IS_ADMIN}`;
 };
 
 /**
