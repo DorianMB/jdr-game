@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center align-items-center connexion">
     <div class="d-flex flex-column align-items-center w-75 shadow rounded p-3">
-      <h2>Connexion</h2>
+      <h2>Inscription</h2>
       <b-form @submit="onSubmit" class="d-flex flex-column align-items-center w-100">
         <b-form-group
           id="input-group-email"
@@ -13,6 +13,20 @@
             v-model="form.email"
             type="email"
             placeholder="Entrer l'email"
+            :state="validation"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
+          id="input-group-email"
+          label="Pseudo"
+          label-for="input-email"
+        >
+          <b-form-input
+            id="input-email"
+            v-model="form.pseudo"
+            type="text"
+            placeholder="Entrer le pseudo"
             :state="validation"
             required
           ></b-form-input>
@@ -32,21 +46,11 @@
             required
           ></b-form-input>
         </b-form-group>
-        <b-form-checkbox
-          id="checkbox-stay"
-          v-model="form.stay"
-          name="checkbox-stay"
-          value="true"
-          unchecked-value="false"
-          class="mb-3"
-        >
-          Rester connecté(e)
-        </b-form-checkbox>
-        <nuxt-link to="inscription" class="mb-3">Vous n'etes pas encore inscrit ?</nuxt-link>
+        <nuxt-link to="/" class="mb-3">Vous etes déjà inscrit ?</nuxt-link>
         <b-alert v-model="showAlert" variant="danger" dismissible>
           {{message}}
         </b-alert>
-        <b-button type="submit" variant="primary">Se connecter</b-button>
+        <b-button type="submit" variant="primary">S'inscrire</b-button>
       </b-form>
     </div>
   </div>
@@ -59,13 +63,13 @@ import * as ApiUrls from "../static/ApiUrls";
 import * as moment from "moment";
 
 export default {
-  name: "admin",
+  name: "inscription",
   data() {
     return {
       form: {
         email: null,
         password: null,
-        stay: false
+        pseudo: null,
       },
       user: User,
       validation: null,
@@ -76,14 +80,15 @@ export default {
   methods: {
     async onSubmit(event) {
       event.preventDefault();
-      const sendUser = {mail: this.form.email, password: this.form.password};
-      const result = await this.$axios.$post(ApiUrls.GET_API_CONNECTION(), sendUser);
+      const sendUser = {mail: this.form.email, name: this.form.pseudo, password: this.form.password};
+      const result = await this.$axios.$post(ApiUrls.GET_API_ALL_USERS(), sendUser);
       if (!result.success) {
         this.validation = false;
         this.message = result.message;
         this.showAlert = true;
       } else {
-        this.user = result.data;
+        const newUser = await this.$axios.$get(ApiUrls.GET_API_ALL_USERS() + '/' + result.data.insertId);
+        this.user = newUser.data[0];
         if (this.user.name) {
           const token = this.user;
           !this.form.stay ? token.expiration = moment().add(24, 'hours').toISOString() : token.expiration = false;
@@ -96,11 +101,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  .connexion {
-    height: 100vh;
-    .form-group {
-      width: 100%;
-    }
-  }
+<style scoped>
+
 </style>
