@@ -13,8 +13,12 @@
   }
   .list-group-item {
     border: none;
-    &:hover {
+    &-white:hover {
       background-color: $primary;
+      color: white;
+    }
+    &-danger:hover {
+      background-color: $danger;
       color: white;
     }
   }

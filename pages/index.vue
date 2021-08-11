@@ -88,7 +88,7 @@ export default {
           const token = this.user;
           !this.form.stay ? token.expiration = moment().add(24, 'hours').toISOString() : token.expiration = false;
           localStorage.setItem('token', JSON.stringify(token));
-          await this.$router.push('game');
+          await this.$router.push('caracters-list');
         }
       }
     },

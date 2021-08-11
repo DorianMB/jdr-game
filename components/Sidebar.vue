@@ -13,8 +13,8 @@
     >
       <div>
         <b-list-group>
-          <b-list-group-item href="#">Awesome link</b-list-group-item>
-          <b-list-group-item href="#">Link with active state</b-list-group-item>
+          <b-list-group-item href="/caracters-list" variant="white">Acceuil</b-list-group-item>
+          <b-list-group-item href="#" variant="white" v-b-modal.modal-new-caracter>Nouveau personnage</b-list-group-item>
           <b-list-group-item href="#" v-on:click="disconnect()" variant="danger">Deconnexion</b-list-group-item>
         </b-list-group>
       </div>
