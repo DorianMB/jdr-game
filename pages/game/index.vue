@@ -6,7 +6,7 @@
            :key="key"
            class="caracter-card col-3 shadow m-3"
            :style="{ backgroundImage: `url(${caracter.picture})`}"
-           @click="console(caracter)">
+           @click="goToDetail(caracter)">
         <span>{{caracter.name}}</span>
       </div>
     </div>
@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import {User} from "../static/models/user";
-import {Caracter} from "../static/models/caracter";
-import * as ApiUrl from "../static/ApiUrls";
+import {User} from "../../static/models/user";
+import {Caracter} from "../../static/models/caracter";
+import * as ApiUrl from "../../static/ApiUrls";
 
 export default {
-  name: "caracters-list",
+  name: "index",
   data() {
     return {
       user: User,
@@ -41,8 +41,8 @@ export default {
       const res = await this.$axios.$get(ApiUrl.GET_API_ALL_CARACTERS());
       this.caracters = res.data;
     },
-    console(data) {
-      console.log(data);
+    goToDetail(data) {
+      this.$router.push('/game/' + data.caracter_id);
     }
   }
 }
