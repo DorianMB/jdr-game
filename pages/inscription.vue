@@ -81,13 +81,13 @@ export default {
     async onSubmit(event) {
       event.preventDefault();
       const sendUser = {mail: this.form.email, name: this.form.pseudo, password: this.form.password};
-      const result = await this.$axios.$post(ApiUrls.GET_API_ALL_USERS(), sendUser);
+      const result = await this.$axios.$post(ApiUrls.API_USERS(), sendUser);
       if (!result.success) {
         this.validation = false;
         this.message = result.message;
         this.showAlert = true;
       } else {
-        const newUser = await this.$axios.$get(ApiUrls.GET_API_ALL_USERS() + '/' + result.data.insertId);
+        const newUser = await this.$axios.$get(ApiUrls.API_USERS() + '/' + result.data.insertId);
         this.user = newUser.data[0];
         if (this.user.name) {
           const token = this.user;

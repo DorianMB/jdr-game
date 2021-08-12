@@ -1,12 +1,12 @@
 import moment from "moment";
-import {GET_API_IS_ADMIN} from "../static/ApiUrls";
+import {API_IS_ADMIN} from "../static/ApiUrls";
 // @ts-ignore
 export default async function (context) {
   const token = JSON.parse(<string>localStorage.getItem('token'));
   console.log('token', token);
   let isAdmin = false;
   if (token) {
-    const res = await context.$axios.$get(GET_API_IS_ADMIN()+'/'+token.user_id);
+    const res = await context.$axios.$get(API_IS_ADMIN()+'/'+token.user_id);
     isAdmin = res.data;
   }
 

@@ -53,9 +53,9 @@ export default {
     }
   },
   async beforeMount() {
-    const res = await this.$axios.$get(ApiUrls.GET_API_ALL_CARACTERS() + '/' + this.id);
+    const res = await this.$axios.$get(ApiUrls.API_CARACTERS() + '/' + this.id);
     this.caracter = res.data[0];
-    const resBag = await this.$axios.$get(ApiUrls.GET_API_ALL_BAGS() + '/' + this.caracter.bag_id);
+    const resBag = await this.$axios.$get(ApiUrls.API_BAGS() + '/' + this.caracter.bag_id);
     this.bag = resBag.data[0];
     this.items.push({picture: this.caracter.picture});
     this.items.push({picture: this.caracter.picture});

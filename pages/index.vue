@@ -77,7 +77,7 @@ export default {
     async onSubmit(event) {
       event.preventDefault();
       const sendUser = {mail: this.form.email, password: this.form.password};
-      const result = await this.$axios.$post(ApiUrls.GET_API_CONNECTION(), sendUser);
+      const result = await this.$axios.$post(ApiUrls.API_CONNECTION(), sendUser);
       if (!result.success) {
         this.validation = false;
         this.message = result.message;

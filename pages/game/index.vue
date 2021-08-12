@@ -38,7 +38,7 @@ export default {
   methods: {
     async getAllCaracters() {
       console.log('parent');
-      const res = await this.$axios.$get(ApiUrl.GET_API_ALL_CARACTERS());
+      const res = await this.$axios.$get(ApiUrl.API_CARACTERS_BY_USER() + '/' + this.user.user_id);
       this.caracters = res.data;
     },
     goToDetail(data) {
