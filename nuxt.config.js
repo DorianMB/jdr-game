@@ -53,6 +53,10 @@ export default {
     '/api': 'http://localhost:5000'
   },
 
+  router: {
+    middleware: 'guard'
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
