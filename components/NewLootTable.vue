@@ -236,7 +236,7 @@
       </b-form-group>
       <b-form-group
         id="input-group-luck"
-        label="Vie max et min"
+        label="Chance max et min"
         label-for="input-luck"
       >
         <div class="d-flex">
@@ -348,7 +348,6 @@ export default {
         return;
       } else {
         this.showMessage = false;
-        console.log('submit', this.form);
         const token = JSON.parse(localStorage.getItem('token'));
         await this.createLootTable(this.$axios, this.form);
         this.$nextTick(() => {

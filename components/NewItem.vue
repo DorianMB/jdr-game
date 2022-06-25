@@ -155,7 +155,17 @@ export default {
   props: {
     reload: {
       type: Function,
-    }
+    },
+    isShow: {
+      type: Boolean,
+    },
+  },
+  watch: {
+    isShow: function(val) {
+      if (val) {
+        this.clear();
+      }
+    },
   },
   data() {
     return {
@@ -196,18 +206,19 @@ export default {
         this.showMessage = false;
         this.form.loot_id = this.type.loot_id;
         if (this.automatic) {
-          await this.createItemAuto(this.$axios, this.type, null);
+          await this.createItemAuto(this.$axios, this.type, null, 100);
           this.$nextTick(() => {
             this.$emit('closeModal');
             this.reload();
+            this.isShow = false;
             this.$bvModal.hide('modal-new-item')
           })
         } else {
-          console.log('submit', this.form);
           await this.createItem(this.$axios, this.form);
           this.$nextTick(() => {
             this.$emit('closeModal');
             this.reload();
+            this.isShow = false;
             this.$bvModal.hide('modal-new-item')
           })
         }
@@ -229,6 +240,7 @@ export default {
       this.form.charm = false;
       this.form.charm_type = null;
       this.form.charm_value = null;
+      this.getLootTables();
     },
     async getLootTables() {
       const response = await this.$axios.$get(API_LOOT_TABLE());
@@ -238,7 +250,6 @@ export default {
           value: lootTable
         }
       });
-      console.log('loot tables', this.options);
     },
     asLimit(min, max) {
       if (min && max) {

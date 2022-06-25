@@ -6,6 +6,7 @@ const _USER = "/user";
 const _CARACTERS = "/caracters";
 const _EQUIPEMENTS = "/equipements";
 const _BAGS = "/bags";
+const _BAG = "/bag";
 const _STATS = "/stats";
 const _LOOT_TABLE = "/loot-table";
 const _ITEMS = "/items";
@@ -78,4 +79,11 @@ export const API_LOOT_TABLE = () => {
  */
 export const API_ITEMS = () => {
   return `${_BASE_API}${_ITEMS}`;
+};
+
+/**
+ * @return {string}
+ */
+export const API_ITEMS_BY_BAG = () => {
+  return `${_BASE_API}${_ITEMS}${_BAG}`;
 };

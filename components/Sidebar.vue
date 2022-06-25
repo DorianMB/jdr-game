@@ -55,7 +55,6 @@ export default {
     },
     async isAdmin() {
       const token = JSON.parse(localStorage.getItem('token'));
-      console.log(token, 'token');
       const res = await this.$axios.$get(API_IS_ADMIN()+'/'+token.user_id);
       this.isAdminBool = res.data;
     }

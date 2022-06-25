@@ -7,6 +7,7 @@ import {Stat} from "~/static/models/stat";
 import {Caracter} from "~/static/models/caracter";
 import {LootTable} from "~/static/models/lootTable";
 import {Item} from "~/static/models/item";
+import {charmTypeLoot} from "./Constants";
 
 export function getNameAndEmail(user: User) {
   return user.name + " & " + user.mail;
@@ -56,19 +57,30 @@ export async function createItem(axios: NuxtAxiosInstance, form: Item) {
   return res;
 }
 
-export async function createItemAuto(axios: NuxtAxiosInstance, loot: LootTable, moobLevel: number) {
+export async function createItemAuto(axios: NuxtAxiosInstance, loot: LootTable, moobLevel: number, playerLuck: number) {
   let item: Item = {};
   item.loot_id = loot.loot_id;
-  item.level = random(1, moobLevel);
-  item.strength = random(loot.strength_min, loot.strength_max);
-  item.intelligence = random(loot.intelligence_min, loot.intelligence_max);
-  item.speed = random(loot.speed_min, loot.speed_max);
-  item.charisma = random(loot.charisma_min, loot.charisma_max);
-  item.health = random(loot.health_min, loot.health_max);
-  item.luck = random(loot.luck_min, loot.luck_max);
-  item.charm = loot.charm;
-  item.charm_type = loot.charm_type;
-  item.charm_value = random(loot.charm_value, 10);
+  item.level = random(1, moobLevel, playerLuck);
+  item.strength = random(loot.strength_min, loot.strength_max, playerLuck);
+  item.intelligence = random(loot.intelligence_min, loot.intelligence_max, playerLuck);
+  item.speed = random(loot.speed_min, loot.speed_max, playerLuck);
+  item.charisma = random(loot.charisma_min, loot.charisma_max, playerLuck);
+  item.health = random(loot.health_min, loot.health_max, playerLuck);
+  item.luck = random(loot.luck_min, loot.luck_max, playerLuck);
+  if (loot.charm) {
+    item.charm = loot.charm;
+    item.charm_type = loot.charm_type;
+    item.charm_value = random(loot.charm_value, 100, playerLuck);
+  } else {
+    const isCharm = random(0,1, playerLuck);
+    if (isCharm === 1) {
+      item.charm = true;
+      item.charm_type = charmTypeLoot[random(0, charmTypeLoot.length - 1, 0)];
+      item.charm_value = random(loot.charm_value, 100, playerLuck);
+    } else {
+      item.charm = false;
+    }
+  }
   const res = await axios.$post(ApiUrls.API_ITEMS(), item);
   return res;
 }
@@ -77,13 +89,27 @@ export async function createItemAuto(axios: NuxtAxiosInstance, loot: LootTable, 
 // if min is null then min = 0
 // if max is null then max is infinite
 // generate a random number between min and max and this number is rounded
-function random(min: any, max: any) {
+function random(min: any, max: any, luck: any) {
   if (isNaN(min) || min == null) {
     min = 0;
   }
   if (isNaN(max) || max == null) {
     max = 100;
   }
-  console.log('min max', min, max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  const rand1 = Math.floor(Math.random() * (max - min + 1)) + min;
+  const rand2 = Math.floor(Math.random() * (max - min + 1)) + min;
+  // what is the greatest number between rand1 and rand2
+  let maxRand = Math.max(rand1, rand2);
+  // if luck is null or undefined then return rand1
+  // if luck is a number then function will return max between rand1 and rand2 depending on luck percentage
+  if (isNaN(luck) || luck == null) {
+    return rand1;
+  } else {
+    const rand = Math.floor(Math.random() * (100 + 1));
+    if (rand <= luck) {
+      return maxRand;
+    } else {
+      return rand1;
+    }
+  }
 }

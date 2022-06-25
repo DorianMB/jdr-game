@@ -330,7 +330,6 @@ export default {
         return;
       } else {
         this.showMessage = false;
-        console.log('submit', this.form);
         await this.$axios.$put(ApiUrls.API_LOOT_TABLE() + '/' + this.id, this.lootTable);
         this.$nextTick(() => {
           this.$emit('closeModal');

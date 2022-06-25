@@ -1,30 +1,30 @@
 <template>
   <div class="w-100 p-5 row">
     <div class="col-3 d-flex flex-wrap justify-content-center">
-      <div class="item-slot" id="helmet" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
-      <div class="item-slot" id="chestplate" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)">
-        <img v-if="itemsInEquipement.chestplate" :id="'chestplate' + itemsInEquipement.chestplate.item_id" :src="getImageByLootTable(itemsInEquipement.chestplate.loot_id)" draggable="true" v-on:dragstart="drag($event)" width="100" height="100">
+      <div class="item-slot" id="helmet-slot" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
+      <div class="item-slot" id="chestplate-slot" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)">
+        <img v-if="itemsInEquipement.chestplate" :id="getTypeByLootTable(itemsInEquipement.chestplate.loot_id)" :src="getImageByLootTable(itemsInEquipement.chestplate.loot_id)" draggable="true" v-on:dragstart="drag($event)" width="100" height="100">
       </div>
-      <div class="item-slot" id="primary-magic-item" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
+      <div class="item-slot" id="primary-magic-item-slot" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
     </div>
     <div class="col-6 d-flex flex-wrap justify-content-center">
       <div class="img-caracter" :style="{ backgroundImage: `url(${caracter.picture})`}"></div>
-      <div class="item-slot mx-2" id="primary-weapon" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
-      <div class="item-slot mx-2" id="secondary-weapon" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
+      <div class="item-slot mx-2" id="primary-weapon-slot" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
+      <div class="item-slot mx-2" id="secondary-weapon-slot" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
     </div>
     <div class="col-3 d-flex flex-wrap justify-content-center">
-      <div class="item-slot" id="gloves" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
-      <div class="item-slot" id="boots" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
-      <div class="item-slot" id="secondary-magic-item" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
+      <div class="item-slot" id="gloves-slot" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
+      <div class="item-slot" id="boots-slot" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
+      <div class="item-slot" id="secondary-magic-item-slot" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
     </div>
     <div class="bag-container w-100 mx-auto d-flex flex-wrap justify-content-center">
       <div v-for="index in bag.length"
            class="item-slot mx-2"
            :key="index"
-           :id="'slot' + index"
+           :id="'bag' + index"
            v-on:drop="drop($event)"
            v-on:dragover="allowDrop($event)">
-        <img v-if="itemsInBag[index - 1]" :id="'item' + index" :src="itemsInBag[index - 1].picture" draggable="true" v-on:dragstart="drag($event)" width="100" height="100">
+        <img v-if="itemsInBag[index - 1]" :id="getTypeByLootTable(itemsInBag[index - 1].loot_id)" :src="getImageByLootTable(itemsInBag[index - 1].loot_id)" draggable="true" v-on:dragstart="drag($event)" width="100" height="100">
       </div>
     </div>
   </div>
@@ -35,6 +35,7 @@ import {Caracter} from "../../static/models/caracter";
 import * as ApiUrls from "../../static/ApiUrls";
 import {Bag} from "../../static/models/bag";
 import {Equipement} from "static/models/equipement";
+import {API_ITEMS_BY_BAG} from "../../static/ApiUrls";
 
 export default {
   name: "_id",
@@ -68,6 +69,7 @@ export default {
         secondaryMagicItem: null
       },
       lootTable : [],
+      dragElement: null,
     }
   },
   async beforeMount() {
@@ -77,23 +79,43 @@ export default {
     this.bag = resBag.data[0];
     const resEquipement = await this.$axios.$get(ApiUrls.API_EQUIPEMENTS() + '/' + this.caracter.equipement_id);
     this.equipement = resEquipement.data[0];
-    this.itemsInBag.push({picture: this.caracter.picture});
-    this.itemsInBag.push({picture: this.caracter.picture});
+    const itemsBag = await this.$axios.$get(ApiUrls.API_ITEMS_BY_BAG() + '/' + this.bag.bag_id);
+    this.itemsInBag = itemsBag.data;
+    // for all item in itemsInBag run updateLootTable
+    for (let i = 0; i < this.itemsInBag.length; i++) {
+      await this.updateLootTable(this.itemsInBag[i]);
+    }
     this.getAllEquipement();
   },
   methods: {
     allowDrop(ev) {
-      ev.preventDefault();
+      console.log('allow', ev.target.id, this.dragElement);
+      if (this.dragElement === ev.target.id.replace('-slot', '') || ev.target.id.includes('bag')) {
+        ev.preventDefault();
+      }
+      if (this.dragElement === 'sword' || this.dragElement === 'bow' || this.dragElement === 'magic_wand') {
+        if (ev.target.id === "primary-weapon-slot") {
+          ev.preventDefault();
+        }
+      }
+      if (this.dragElement === 'shield' || this.dragElement === 'arrow' || this.dragElement === 'magic_book') {
+        if (ev.target.id === "secondary-weapon-slot") {
+          ev.preventDefault();
+        }
+      }
+      if (this.dragElement === 'magic_item' && ev.target.id.includes("magic-item-slot")) {
+        ev.preventDefault();
+      }
     },
     drag(ev) {
       ev.dataTransfer.setData("text", ev.target.id);
+      this.dragElement = ev.target.id;
     },
     drop(ev) {
       ev.preventDefault();
       let data = ev.dataTransfer.getData("text");
       let ele = document.getElementById(data);
       let targetId = ev.target.getAttribute('id');
-      console.log(data, targetId, ele, ev.target.tagName);
       if (ev.target.tagName === "IMG") {
         alert('slot already set');
       } else if (data !== targetId) {
@@ -112,8 +134,7 @@ export default {
         if (property !== null && property !== 'equipement_id') {
           const res = await this.$axios.$get(ApiUrls.API_ITEMS() + '/' + this.equipement[property]);
           this.itemsInEquipement[property.replace('_id', '')] = res.data[0];
-          const loot = await this.$axios.$get(ApiUrls.API_LOOT_TABLE() + '/' + res.data[0].loot_id);
-          this.lootTable.push(loot.data[0]);
+          await this.updateLootTable(res.data[0]);
         }
       })
     },
@@ -126,6 +147,20 @@ export default {
       } else {
         return '';
       }
+    },
+    getTypeByLootTable(loot_id) {
+      const loot = this.lootTable.find(loot => {
+        return loot.loot_id === loot_id;
+      });
+      if (loot) {
+        return loot.type;
+      } else {
+        return '';
+      }
+    },
+    async updateLootTable(item) {
+      const loot = await this.$axios.$get(ApiUrls.API_LOOT_TABLE() + '/' + item.loot_id);
+      this.lootTable.push(loot.data[0]);
     }
   }
 }

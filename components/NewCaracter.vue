@@ -56,7 +56,6 @@ export default {
 
   methods: {
     async onSubmit() {
-      console.log('submit');
       const token = JSON.parse(localStorage.getItem('token'));
       await this.createCaracter(this.$axios, token.user_id, this.form);
       this.$nextTick(() => {
