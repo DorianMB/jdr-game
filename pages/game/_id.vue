@@ -2,7 +2,9 @@
   <div class="w-100 p-5 row">
     <div class="col-3 d-flex flex-wrap justify-content-center">
       <div class="item-slot" id="helmet" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
-      <div class="item-slot" id="chestplate" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
+      <div class="item-slot" id="chestplate" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)">
+        <img v-if="itemsInEquipement.chestplate" :id="'chestplate' + itemsInEquipement.chestplate.item_id" :src="getImageByLootTable(itemsInEquipement.chestplate.loot_id)" draggable="true" v-on:dragstart="drag($event)" width="100" height="100">
+      </div>
       <div class="item-slot" id="primary-magic-item" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
     </div>
     <div class="col-6 d-flex flex-wrap justify-content-center">
@@ -22,7 +24,7 @@
            :id="'slot' + index"
            v-on:drop="drop($event)"
            v-on:dragover="allowDrop($event)">
-        <img v-if="items[index - 1]" :id="'item' + index" :src="items[index - 1].picture" draggable="true" v-on:dragstart="drag($event)" width="100" height="100">
+        <img v-if="itemsInBag[index - 1]" :id="'item' + index" :src="itemsInBag[index - 1].picture" draggable="true" v-on:dragstart="drag($event)" width="100" height="100">
       </div>
     </div>
   </div>
@@ -32,6 +34,7 @@
 import {Caracter} from "../../static/models/caracter";
 import * as ApiUrls from "../../static/ApiUrls";
 import {Bag} from "../../static/models/bag";
+import {Equipement} from "static/models/equipement";
 
 export default {
   name: "_id",
@@ -49,7 +52,22 @@ export default {
         type: Bag,
         default: null
       },
-      items: []
+      equipement: {
+        type: Equipement,
+        default: null
+      },
+      itemsInBag: [],
+      itemsInEquipement: {
+        helmet: null,
+        chestplate: null,
+        primaryWeapon: null,
+        secondaryWeapon: null,
+        gloves: null,
+        boots: null,
+        primaryMagicItem: null,
+        secondaryMagicItem: null
+      },
+      lootTable : [],
     }
   },
   async beforeMount() {
@@ -57,8 +75,11 @@ export default {
     this.caracter = res.data[0];
     const resBag = await this.$axios.$get(ApiUrls.API_BAGS() + '/' + this.caracter.bag_id);
     this.bag = resBag.data[0];
-    this.items.push({picture: this.caracter.picture});
-    this.items.push({picture: this.caracter.picture});
+    const resEquipement = await this.$axios.$get(ApiUrls.API_EQUIPEMENTS() + '/' + this.caracter.equipement_id);
+    this.equipement = resEquipement.data[0];
+    this.itemsInBag.push({picture: this.caracter.picture});
+    this.itemsInBag.push({picture: this.caracter.picture});
+    this.getAllEquipement();
   },
   methods: {
     allowDrop(ev) {
@@ -80,6 +101,30 @@ export default {
         ev.target.appendChild(ele);
       } else {
         console.log('do nothing');
+      }
+    },
+    getAllEquipement() {
+      // foreach property of equipement
+      // itemsInEquipement[property] = await this.$axios.$get(API_ITEMS() + this.equipement[property]);
+      // skip when property is null
+      // skip when property is equipement_id
+      Object.keys(this.equipement).forEach(async property => {
+        if (property !== null && property !== 'equipement_id') {
+          const res = await this.$axios.$get(ApiUrls.API_ITEMS() + '/' + this.equipement[property]);
+          this.itemsInEquipement[property.replace('_id', '')] = res.data[0];
+          const loot = await this.$axios.$get(ApiUrls.API_LOOT_TABLE() + '/' + res.data[0].loot_id);
+          this.lootTable.push(loot.data[0]);
+        }
+      })
+    },
+    getImageByLootTable(loot_id) {
+      const loot = this.lootTable.find(loot => {
+        return loot.loot_id === loot_id;
+      });
+      if (loot) {
+        return loot.picture;
+      } else {
+        return '';
       }
     }
   }

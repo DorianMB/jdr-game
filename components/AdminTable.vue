@@ -9,10 +9,10 @@
     class="mx-3">
       <template #cell(actions)="row">
         <div class="d-flex flex-nowrap">
-          <b-button variant="info" class="mx-1">
+          <b-button variant="info" class="mx-1" :href="redirectDetail.url + '/' + row.item[redirectDetail.id]">
             Details
           </b-button>
-          <b-button variant="danger" class="mx-1">
+          <b-button variant="danger" class="mx-1" @click="console(row)">
             Delete
           </b-button>
         </div>
@@ -38,6 +38,16 @@ export default {
     fields: {
       type: Array,
       default: () => []
+    },
+    redirectDetail: {
+      type: {
+        url: String,
+        id: String
+      },
+      default: {
+        url: '',
+        id: ''
+      }
     }
   },
   watch: {
@@ -56,7 +66,10 @@ export default {
   methods: {
     isUrl(value) {
       return typeof value === 'string' && value.startsWith('http');
-    }
+    },
+    console(row) {
+      console.log('test', row);
+    },
   },
 }
 </script>

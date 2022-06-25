@@ -3,17 +3,17 @@
     <b-tabs class="m-5" content-class="mt-3">
       <b-tab title="Loot Table" active>
         <b-button type="button" class="my-3" v-b-modal.modal-new-loot-table>Nouveau loot table</b-button>
-        <AdminTable :items="lootTable" :fields="fieldsLootTable"/>
+        <AdminTable :items="lootTable" :fields="fieldsLootTable" :redirect-detail="redirectLootTable"/>
       </b-tab>
       <b-tab title="Users">
-        <AdminTable :items="users" :fields="fieldsUsers"/>
+        <AdminTable :items="users" :fields="fieldsUsers" :redirect-detail="redirectUsers"/>
       </b-tab>
       <b-tab title="Items">
         <b-button type="button" class="my-3" v-b-modal.modal-new-item>Nouvel item</b-button>
-        <AdminTable :items="items" :fields="fieldsItems"/>
+        <AdminTable :items="items" :fields="fieldsItems" :redirect-detail="redirectItems"/>
       </b-tab>
       <b-tab title="Caracters">
-        <AdminTable :items="caracters" :fields="fieldsCaracters"/>
+        <AdminTable :items="caracters" :fields="fieldsCaracters" :redirect-detail="fieldsCaracters"/>
       </b-tab>
       <b-tab title="Moobs"><p>I'm a moobs tab!</p></b-tab>
     </b-tabs>
@@ -26,7 +26,7 @@
 import {API_CARACTERS, API_ITEMS, API_LOOT_TABLE, API_USERS} from "static/ApiUrls";
 
 export default {
-  name: "admin",
+  name: "index",
   data() {
     return {
       lootTable: [],
@@ -37,6 +37,10 @@ export default {
       fieldsUsers: [],
       fieldsItems: [],
       fieldsCaracters: [],
+      redirectLootTable: {url: 'admin/lootTable', id: 'loot_id'},
+      redirectUsers: {url: 'admin/users', id: 'user_id'},
+      redirectItems: {url: 'admin/items', id: 'item_id'},
+      redirectCaracters: {url: 'admin/caracters', id: 'caracter_id'},
     }
   },
   beforeMount() {
