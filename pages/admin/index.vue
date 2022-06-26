@@ -13,7 +13,7 @@
         <AdminTable :items="items" :fields="fieldsItems" :redirect-detail="redirectItems"/>
       </b-tab>
       <b-tab title="Caracters">
-        <AdminTable :items="caracters" :fields="fieldsCaracters" :redirect-detail="fieldsCaracters"/>
+        <AdminTable :items="caracters" :fields="fieldsCaracters" :redirect-detail="redirectCaracters"/>
       </b-tab>
       <b-tab title="Moobs"><p>I'm a moobs tab!</p></b-tab>
     </b-tabs>
