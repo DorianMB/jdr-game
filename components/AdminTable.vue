@@ -9,7 +9,7 @@
     class="mx-3">
       <template #cell(actions)="row">
         <div class="d-flex flex-nowrap">
-          <b-button variant="info" class="mx-1" :href="redirectDetail.url + '/' + row.item[redirectDetail.id]">
+          <b-button variant="info" class="mx-1" v-if="redirectDetail.url" :href="redirectDetail.url + '/' + row.item[redirectDetail.id]">
             Details
           </b-button>
           <b-button variant="danger" class="mx-1" @click="console(row)">

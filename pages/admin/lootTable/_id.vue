@@ -331,11 +331,6 @@ export default {
       } else {
         this.showMessage = false;
         await this.$axios.$put(ApiUrls.API_LOOT_TABLE() + '/' + this.id, this.lootTable);
-        this.$nextTick(() => {
-          this.$emit('closeModal');
-          this.reload();
-          this.$bvModal.hide('modal-new-loot-table')
-        })
       }
     },
   }

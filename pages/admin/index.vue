@@ -38,7 +38,7 @@ export default {
       fieldsItems: [],
       fieldsCaracters: [],
       redirectLootTable: {url: 'admin/lootTable', id: 'loot_id'},
-      redirectUsers: {url: 'admin/users', id: 'user_id'},
+      redirectUsers: {url: null, id: null},
       redirectItems: {url: 'admin/items', id: 'item_id'},
       redirectCaracters: {url: 'admin/caracters', id: 'caracter_id'},
     }

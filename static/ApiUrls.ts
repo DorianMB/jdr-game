@@ -49,8 +49,22 @@ export const API_CARACTERS_BY_USER = () => {
 /**
  * @return {string}
  */
+export const API_CARACTERS_BY_EQUIPEMENT = () => {
+  return `${_BASE_API}${_CARACTERS}${_EQUIPEMENTS}`;
+};
+
+/**
+ * @return {string}
+ */
 export const API_EQUIPEMENTS = () => {
   return `${_BASE_API}${_EQUIPEMENTS}`;
+};
+
+/**
+ * @return {string}
+ */
+export const API_EQUIPEMENTS_BY_ITEMS = () => {
+  return `${_BASE_API}${_EQUIPEMENTS}${_ITEMS}`;
 };
 
 /**
