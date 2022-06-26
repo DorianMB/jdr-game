@@ -111,9 +111,8 @@
           id="input-group-charm"
           label="Votre objet est-il enchanté ?"
           label-for="input-charm"
-          label-class="required"
         >
-          <b-form-checkbox id="input-charm" v-model="item.charm" name="check-charm" size="lg" switch required>
+          <b-form-checkbox id="input-charm" v-model="item.charm" name="check-charm" size="lg" switch>
           </b-form-checkbox>
         </b-form-group>
         <b-form-group
